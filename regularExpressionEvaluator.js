@@ -22,7 +22,7 @@
  * Input: two strings. s - string. p - pattern
  * Output: boolean (does the string match the pattern)
  * Constraint: p : not empty and always valid.
- * Edge cases: 
+ * Edge cases: .*b here in this example I can't assure that it will work. therefore it's better to start from right to left better.
  * Analyze: 
  *     a-z: means a direct match.
  *     . : any character is valid.
@@ -73,7 +73,7 @@ function nonStarPatterns(patterns, stringArray) {
             }
         }
     })
-    if(stringArray.length !== 0){
+    if (stringArray.length !== 0) {
         result = false;
     }
     return result
@@ -83,28 +83,24 @@ function starPatterns(patterns, stringArray) { // return a boolean
     let result = true;
     [...patterns].map((pattern, index) => {
         if (index === patterns.length - 1) { // This means that the char has a star symbol after it.
-            // do something
-            var r = 0
             do {
-                if(result){
-                    r++
-                }
                 var originalChar = stringArray.shift()
                 var result = isCharMatch(originalChar, pattern)
+                console.log('Char:', originalChar, ' Pattern: ', pattern, 'Match result:', result)
             } while (result && stringArray.length !== 0)
-                if(r !== 0 && !result){
-                    stringArray.unshift(originalChar)
-                }
-        } else {
-           if(!matchNotStar(pattern, stringArray)){
-               result = false
-           }
+            if (!result) {
+                stringArray.unshift(originalChar)
+            }
+        } else { // Normal chars a-z or .
+            if (!matchNotStar(pattern, stringArray)) {
+                result = false
+            }
         }
     })
     return result;
 }
 
-function matchNotStar(pattern, stringArray){
+function matchNotStar(pattern, stringArray) {
     let result = true
     if (pattern === '.') {
         // it does not matter which charater is appearing.
@@ -125,14 +121,14 @@ function matchNotStar(pattern, stringArray){
 function isCharMatch(char, pattern) {
     if (pattern === char) {
         return true
-    }else if (pattern === '.' && char){
+    } else if (pattern === '.') {
         return true
     }
     return false
 }
 
 
-console.log(isMatch('aab', 'c*ab'))
+console.log(isMatch('aab', '.*b'))
 
 /**
  * ab*a
